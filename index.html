@@ -1,0 +1,26 @@
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <title>NC 2035</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+  <div id="tela-nome">
+    <input type="text" id="input-nome" placeholder="Digite seu nome">
+    <input type="text" id="input-sobrenome" placeholder="Digite seu sobrenome">
+    <button onclick="salvarNome()">Iniciar</button>
+  </div>
+    <div id="game" style="display: none;">
+      <img id="imagem-cena" src="" alt="Cena">
+      <div id="texto" class="digitando"></div>
+      <div id="opcoes"></div>
+      <button onclick="resetarJogo()">Resetar Progresso</button>
+    </div>  
+    
+    <script src="script.js"></script>
+    <script src="roteiro.js"></script>
+
+  </body>
+  </html>
