@@ -100,7 +100,7 @@ body {
 }
 
 #opcoes button:hover {
-  background-color: crimson;
+  background-color: rgb(57, 175, 126);
   color: black;
   border-color: #fff;
   text-shadow: none;
@@ -108,7 +108,7 @@ body {
 
 button:focus {
   outline: none;
-  box-shadow: 0 0 5px crimson;
+  box-shadow: 0 0 5px rgb(57, 175, 126);
 }
 body {
   user-select: none;

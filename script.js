@@ -1,3 +1,5 @@
+let cenaAtual = localStorage.getItem("cenaAtual") || "inicio";
+
 let textoEmExecucao = false;
 let nomeJogador = "";
 let indexCena = 0;
@@ -5,36 +7,84 @@ let subIndex = 0;
 let imagemAtual = "";
 let forca = 0;
 let inteligencia = 0;
-
 let carisma = 0;
 let agilidade = 0;
 let resistencia = 0;
+
+//atualizar HUD
+function atualizarHUD() {
+  document.getElementById("hud-forca").innerText = forca;
+  document.getElementById("hud-inteligencia").innerText = inteligencia;
+  document.getElementById("hud-carisma").innerText = carisma;
+  document.getElementById("hud-agilidade").innerText = agilidade;
+  document.getElementById("hud-resistencia").innerText = resistencia;
+}
+setInterval(atualizarHUD, 500);
+
+
+// EVENTOS ALEATORIOS
+
+const eventosAleatorios = ["evento01", "evento02", "evento03", "evento04", "evento05", "evento06", "evento07", "evento08", "evento09", "evento10",
+  "evento11", "evento12", "evento13", "evento14", "evento15", "evento16", "evento17", "evento18", "evento19",
+  "evento20"];
+let eventosJaUsados = [];
+let contadorEventosAleatorios = 0;
+
+function eventoAleatorio() {
+  contadorEventosAleatorios++;
+
+  if (contadorEventosAleatorios % 5 === 0) {
+    // evento canônico
+    mostrarCena(`canonico${contadorEventosAleatorios / 5}`);
+    return;
+  }
+
+const requisitosEventos = {
+  "evento04_2": "evento04_1",
+  "evento05_2": "evento05_1",
+  "evento07_2": "evento07_1",
+};
+
+
+let disponiveis = eventosAleatorios.filter(e => {
+  const requisito = requisitosEventos[e];
+  if (requisito && localStorage.getItem(requisito) !== "feito") return false;
+  return !eventosJaUsados.includes(e);
+});
+
+
+ if (disponiveis.length === 0) {
+    eventosJaUsados = [];
+    disponiveis = [...eventosAleatorios];
+  }
+
+  const escolhido = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+  eventosJaUsados.push(escolhido);
+  mostrarCena(escolhido);
+}
+// FIM EVENTOS ALEATORIOS
+
+//chance de atributos
+function chanceAtributo(atributo, dificuldade = 5) {
+  const valor = window[atributo] || 0;
+  const chance = Math.min(1, valor / dificuldade); // ex: 3/5 = 0.6 = 60%
+  return Math.random() < chance;
+}
+
+
 
 function alterarInteligencia(valor) {
   inteligencia += valor;
   localStorage.setItem("inteligencia", inteligencia);
 }
 
-function alterarMalicia(chave, valor) {
-    if (malicia[chave] !== undefined) {
-      malicia[chave] += valor;
-      localStorage.setItem("malicia", JSON.stringify(malicia));
-    }
-  }
-
 let afinidade = JSON.parse(localStorage.getItem("afinidade")) || {
-  ariana: 0,     // Áries
-  thalina: 0,    // Touro
-  gemma: 0,      // Gêmeos
-  celina: 0,     // Câncer
-  leona: 0,      // Leão
-  vivianne: 0,   // Virgem
-  lysandra: 0,   // Libra
-  selena: 0,     // Escorpião
-  sabrina: 0,    // Sagitário
-  carmina: 0,    // Capricórnio
-  aurora: 0,     // Aquário
-  perla: 0       // Peixes
+  valentina: 0, //remete a coragem e coração COPAS
+  aurora: 0, //remete ao brilho do amanhecer como OURO
+  silvana: 0, //remete a floresta ou "da mata" PAUS
+  valeria: 0, //remete a forte, saudavel força da ESPADA
+  lua: 0, //remete a algo que surge e tem varias fases CORINGA
+  melinda: 0, //remete doce mas toque de imprevisibilidade CORINGA
 };
   let estaDigitando = false;
   let cliqueParaAvancar = false;
@@ -52,8 +102,6 @@ let afinidade = JSON.parse(localStorage.getItem("afinidade")) || {
       location.reload();
     }
   }
-
-  let cenaAtual = localStorage.getItem("cenaAtual") || "inicio";
 
   let malicia = JSON.parse(localStorage.getItem("malicia")) || { malicia: 0 };
 
@@ -158,23 +206,29 @@ let afinidade = JSON.parse(localStorage.getItem("afinidade")) || {
   }
 
   function mostrarOpcoes(opcoes) {
-    opcoesDiv.innerHTML = "";
-    opcoes.forEach(opcao => {
-      const botao = document.createElement("button");
-      botao.innerText = typeof opcao === "string" ? opcao : opcao.texto;
+  opcoesDiv.innerHTML = "";
+  opcoes.forEach((opcao) => {
+    const botao = document.createElement("button");
+    botao.innerText = typeof opcao === "string" ? opcao : opcao.texto;
 
-      botao.onclick = () => {
-        if (estaDigitando) return;
-        if (typeof opcao !== "string" && opcao.acao) {
-          opcao.acao();
-        }
+    botao.onclick = () => {
+      if (estaDigitando) return;
+      if (typeof opcao !== "string" && opcao.acao) {
+        opcao.acao();
+      }
+
+      // Adiciona esta lógica para lidar com textoExtra
+      if (opcao.textoExtra && opcao.textoExtra.length > 0) {
+        mostrarTextoExtra(opcao.textoExtra, opcao.proximaCenaAposExtra);
+      } else {
         const proxima = typeof opcao === "string" ? cena.proxima : opcao.proxima;
         mostrarCena(proxima);
-      };
+      }
+    };
 
-      opcoesDiv.appendChild(botao);
-    });
-  }
+    opcoesDiv.appendChild(botao);
+  });
+}
 
   function digitarTexto(texto, elemento, delay = 20, callback = null) {
     estaDigitando = true;
@@ -234,3 +288,4 @@ let afinidade = JSON.parse(localStorage.getItem("afinidade")) || {
       avancarCallback();
     }
   }
+  

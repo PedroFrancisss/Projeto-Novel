@@ -1,26 +1,37 @@
-  <!DOCTYPE html>
-  <html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>NC 2035</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
 
-  <div id="tela-nome">
-    <input type="text" id="input-nome" placeholder="Digite seu nome">
-    <input type="text" id="input-sobrenome" placeholder="Digite seu sobrenome">
-    <button onclick="salvarNome()">Iniciar</button>
-  </div>
+    <div id="hud" style="position: fixed; top: 10px; right: 10px; font-size: 12px; background: rgba(0,0,0,0.5); padding: 8px; color: white; z-index: 999;">
+  <div>FOR: <span id="hud-forca">0</span></div>
+  <div>INT: <span id="hud-inteligencia">0</span></div>
+  <div>CAR: <span id="hud-carisma">0</span></div>
+  <div>AGI: <span id="hud-agilidade">0</span></div>
+  <div>RES: <span id="hud-resistencia">0</span></div>
+</div>
+
+    <div id="tela-nome">
+      <input type="text" id="input-nome" placeholder="Digite seu nome" />
+      <input
+        type="text"
+        id="input-sobrenome"
+        placeholder="Digite seu sobrenome"
+      />
+      <button onclick="salvarNome()">Iniciar</button>
+    </div>
     <div id="game" style="display: none;">
-      <img id="imagem-cena" src="" alt="Cena">
+      <img id="imagem-cena" src="" alt="Cena" />
       <div id="texto" class="digitando"></div>
       <div id="opcoes"></div>
       <button onclick="resetarJogo()">Resetar Progresso</button>
-    </div>  
-    
-    <script src="script.js"></script>
-    <script src="roteiro.js"></script>
+    </div>
 
+    <script src="roteiro.js"></script>
+    <script src="script.js"></script>
   </body>
-  </html>
+</html>
